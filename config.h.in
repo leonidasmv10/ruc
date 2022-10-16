@@ -1,0 +1,4 @@
+#define ZAR_URL "@URL@"
+#define ZAR_USER "@USER@"
+#define ZAR_PASS "@PASS@"
+#define ZAR_DB "@DB@"
