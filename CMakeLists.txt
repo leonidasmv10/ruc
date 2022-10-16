@@ -29,23 +29,18 @@ find_package(CURL CONFIG REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/include)
 link_directories(${CMAKE_SOURCE_DIR}/vendor/lib)
 
-
-
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_SOURCE_DIR}/config.h)
-
 
 add_executable(${PROJECT_NAME} ${MAIN})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-libcrypto libssl mysqlcppconn mysqlcppconn8 
-mysqlcppconn8-static mysqlcppconn-static) 
+libcrypto libssl mysqlcppconn mysqlcppconn8) 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE GLEW::GLEW)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip libzippp::libzippp)
 target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
-
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
