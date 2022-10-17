@@ -25,6 +25,7 @@ find_package(GLEW REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(libzippp CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/vendor/include)
 link_directories(${CMAKE_SOURCE_DIR}/vendor/lib)
@@ -41,6 +42,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE GLEW::GLEW)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip libzippp::libzippp)
 target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
