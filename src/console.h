@@ -2,12 +2,12 @@
 
 namespace zar
 {
-	class Console {
+	class console {
 	public:
 
-		static Console* instance()
+		static console* instance()
 		{
-			static Console instance;
+			static console instance;
 			return &instance;
 		}
 
@@ -19,15 +19,15 @@ namespace zar
 				{
 					spdlog::info("download zip");
 
-					if (zar::Http::execute(file->url, file->out_filename))
+					if (zar::http::execute(file->url, file->out_filename))
 					{
 						spdlog::info("download {} success", file->url);
 						spdlog::info("read zip");
 
-						if (zar::Zip::execute(file->out_filename, file->name, file->size, file->text_data))
+						if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
 						{
 							spdlog::info("read {} success", file->name);
-							zar::Tool::print(file->text_data);
+							zar::tool::split_iterator(file->text_data, file->my_map);
 						}
 					}
 					flag->is_update = false;

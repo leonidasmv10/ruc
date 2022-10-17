@@ -4,12 +4,12 @@
 
 namespace zar
 {
-	class Http {
+	class http {
 	public:
 
 		static bool execute(const char* url, const char* out_file_name)
 		{
-			CURL* curl;
+			/*CURL* curl;
 			FILE* fp;
 			CURLcode res;
 			curl = curl_easy_init();
@@ -24,7 +24,8 @@ namespace zar
 				fclose(fp);
 				return true;
 			}
-			return false;
+			return false;*/
+			return true;
 		}
 
 	private:

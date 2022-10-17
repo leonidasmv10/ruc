@@ -9,53 +9,19 @@
 
 namespace zar
 {
-	class App {
+	class app {
 	public:
 
-		static App* instance()
+		static app* instance()
 		{
-			static App instance;
+			static app instance;
 			return &instance;
 		}
 
 		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
 			spdlog::info("welcome");
-
-			if (glfwInit() == GL_FALSE) return;
-
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-			window = glfwCreateWindow(800, 600, "RUC", NULL, NULL);
-
-			if (!window) return;
-			glfwMakeContextCurrent(window);
-
-			if (GLenum err = glewInit()) return;
-			const char* glsl_version = "#version 330";
-
-			IMGUI_CHECKVERSION();
-			ImGui::CreateContext();
-			ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-			io.ConfigFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
-
-			ImGui::StyleColorsDark();
-
-			ImGuiStyle& style = ImGui::GetStyle();
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-			{
-				style.WindowRounding = 0.0f;
-				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-			}
-
-			ImGuiWindowFlags window_flags = 0;
-			ImGui_ImplGlfw_InitForOpenGL(window, true);
-			ImGui_ImplOpenGL3_Init(glsl_version);
+			init();
 
 			while (!glfwWindowShouldClose(window))
 			{
@@ -121,6 +87,44 @@ namespace zar
 		}
 
 	private:
+
+		void init()
+		{
+			if (glfwInit() == GL_FALSE) return;
+
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+			window = glfwCreateWindow(800, 600, "RUC", NULL, NULL);
+
+			if (!window) return;
+			glfwMakeContextCurrent(window);
+
+			if (GLenum err = glewInit()) return;
+			const char* glsl_version = "#version 330";
+
+			IMGUI_CHECKVERSION();
+			ImGui::CreateContext();
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+			io.ConfigFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+
+			ImGui::StyleColorsDark();
+
+			ImGuiStyle& style = ImGui::GetStyle();
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+			{
+				style.WindowRounding = 0.0f;
+				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+			}
+
+			ImGuiWindowFlags window_flags = 0;
+			ImGui_ImplGlfw_InitForOpenGL(window, true);
+			ImGui_ImplOpenGL3_Init(glsl_version);
+		}
 
 		void dock_space()
 		{

@@ -4,7 +4,7 @@
 
 namespace zar
 {
-	class Zip {
+	class zip {
 	public:
 
 		static bool execute(const char* zip, std::string& name, int& size, std::string& text_data)

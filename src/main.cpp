@@ -5,31 +5,33 @@
 #include <future>
 #include <iostream>
 #include <stdio.h>
+#include <map>
 
 #include <spdlog\spdlog.h>
+
+#include "server_data.h"
+#include "flag_data.h"
+#include "ruc_data.h"
+#include "file_data.h"
 
 #include "http.h"
 #include "zip.h"
 #include "tool.h"
 
-#include "file_data.h"
-#include "server_data.h"
-#include "flag_data.h"
-#include "ruc_data.h"
-
 #include "app.h"
 #include "console.h"
 
 void console_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::Console::instance()->task(file, server, flag);
+	zar::console::instance()->task(file, server, flag);
 }
 
 void app_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::App::instance()->task(file, server, flag);
+	zar::app::instance()->task(file, server, flag);
 }
 
 int main()
 {
+
 	setlocale(LC_ALL, "es_ES");
 
 	// ------------------- DATA -------------------
@@ -49,7 +51,6 @@ int main()
 	}
 
 	m_thread.join();
-
 	spdlog::info("finish");
 	return 0;
 }
