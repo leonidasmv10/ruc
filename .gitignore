@@ -11,3 +11,4 @@ CTestTestfile.cmake
 _deps
 [Bb]uild/
 config.h
+!vendor/include/jdbc/cppconn/config.h
