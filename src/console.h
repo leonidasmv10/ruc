@@ -11,22 +11,23 @@ namespace zar
 			return &instance;
 		}
 
-		void loop(file_data*& file, server_data*& server, flag_data*& flag)
+		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
 			while (true)
 			{
 				if (flag->is_update)
 				{
-					spdlog::info("Download zip");
+					spdlog::info("download zip");
 
 					if (zar::Http::execute(file->url, file->out_filename))
 					{
-						spdlog::info("Download {} success", file->url);
-						spdlog::info("Read zip");
+						spdlog::info("download {} success", file->url);
+						spdlog::info("read zip");
 
 						if (zar::Zip::execute(file->out_filename, file->name, file->size, file->text_data))
 						{
-							spdlog::info("Read {} success", file->name);
+							spdlog::info("read {} success", file->name);
+							zar::Tool::print(file->text_data);
 						}
 					}
 					flag->is_update = false;
@@ -37,7 +38,7 @@ namespace zar
 
 	private:
 
-		
+
 
 	};
 }

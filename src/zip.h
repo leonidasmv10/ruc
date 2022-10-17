@@ -7,7 +7,7 @@ namespace zar
 	class Zip {
 	public:
 
-		static bool execute(const char* zip, std::string &name, int &size, std::string& text_data)
+		static bool execute(const char* zip, std::string& name, int& size, std::string& text_data)
 		{
 			bool flag = false;
 
@@ -19,7 +19,7 @@ namespace zar
 			for (it = entries.begin(); it != entries.end(); ++it) {
 				libzippp::ZipEntry entry = *it;
 				name = entry.getName();
-				 size = entry.getSize();
+				size = entry.getSize();
 
 				text_data = entry.readAsText();
 				flag = true;

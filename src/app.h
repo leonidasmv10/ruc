@@ -18,9 +18,9 @@ namespace zar
 			return &instance;
 		}
 
-		void loop(file_data*& file, server_data*& server, flag_data*& flag)
+		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
-			spdlog::info("Welcome");
+			spdlog::info("welcome");
 
 			if (glfwInit() == GL_FALSE) return;
 
@@ -68,7 +68,7 @@ namespace zar
 
 				dock_space();
 
-				ImGui::Begin("Data");
+				ImGui::Begin("Update");
 				{
 					ImGui::Separator();
 					ImGui::Text("--- ACTUALIZAR ---");

@@ -10,31 +10,33 @@
 
 #include "http.h"
 #include "zip.h"
+#include "tool.h"
 
 #include "file_data.h"
 #include "server_data.h"
 #include "flag_data.h"
+#include "ruc_data.h"
 
 #include "app.h"
 #include "console.h"
 
-using namespace std;
-
 void console_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::Console::instance()->loop(file, server, flag);
+	zar::Console::instance()->task(file, server, flag);
 }
 
 void app_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::App::instance()->loop(file, server, flag);
+	zar::App::instance()->task(file, server, flag);
 }
 
 int main()
 {
-	// ------------------- DATA ----------------
+	setlocale(LC_ALL, "es_ES");
+
+	// ------------------- DATA -------------------
 	zar::file_data* file = new zar::file_data();
 	zar::server_data* server = new zar::server_data();
 	zar::flag_data* flag = new zar::flag_data();
-	// -----------------------------------------
+	// --------------------------------------------
 
 	std::thread m_thread(app_loop, file, server, flag);
 	std::future<void> m_async{};
@@ -48,6 +50,6 @@ int main()
 
 	m_thread.join();
 
-	spdlog::info("Finish");
+	spdlog::info("finish");
 	return 0;
 }
