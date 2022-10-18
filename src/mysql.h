@@ -28,7 +28,6 @@ namespace zar
 			}
 			catch (sql::SQLException& e)
 			{
-				spdlog::error("static void connect(const server_data& data);");
 				spdlog::error("# ERR: SQLException in {}", __FILE__);
 				spdlog::error("({}) on line {}", __FUNCTION__, __LINE__);
 				spdlog::error("# ERR: {}", e.what());
@@ -45,7 +44,6 @@ namespace zar
 			}
 			catch (sql::SQLException& e)
 			{
-				spdlog::error("static void open();");
 				spdlog::error("# ERR: SQLException in {}", __FILE__);
 				spdlog::error("({}) on line {}", __FUNCTION__, __LINE__);
 				spdlog::error("# ERR: {}", e.what());
@@ -64,7 +62,6 @@ namespace zar
 			}
 			catch (sql::SQLException& e)
 			{
-				spdlog::error("static void close();");
 				spdlog::error("# ERR: SQLException in {}", __FILE__);
 				spdlog::error("({}) on line {}", __FUNCTION__, __LINE__);
 				spdlog::error("# ERR: {}", e.what());
@@ -81,7 +78,6 @@ namespace zar
 			}
 			catch (sql::SQLException& e)
 			{
-				spdlog::error("static void execute_query(const std::string &query);");
 				spdlog::error("# ERR: SQLException in {}", __FILE__);
 				spdlog::error("({}) on line {}", __FUNCTION__, __LINE__);
 				spdlog::error("# ERR: {}", e.what());

@@ -34,32 +34,47 @@ namespace zar
 			int type = 1;
 			ruc_data new_ruc;
 
+			bool is_ascii = false;
+			std::string r_data = "";
+
 			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
 			{
-
 				if (*it == '|')
 				{
-					set_type(new_ruc, std::string(it_begin, it), type);
+					r_data = std::string(it_begin, it);
+					if (is_ascii) fixed_ascci(r_data);
+					set_type(new_ruc, r_data, type);
 					it_begin = it + 1;
 				}
-
-				if (*it == '\n')
+				else if (*it == 39)
+				{
+					is_ascii = true;
+				}
+				else if (*it == '\n')
 				{
 					it_begin = it + 1;
 					type = 1;
 					my_map[new_ruc.ruc] = new_ruc;
+					is_ascii = false;
 				}
 			}
 
 			set_type(new_ruc, std::string(it_begin, it_end), type);
 			my_map[new_ruc.ruc] = new_ruc;
-			system("pause");
 
-			for (auto m_it = my_map.begin(); m_it != my_map.end(); ++m_it)
+			//system("pause");
+			/*for (auto m_it = my_map.begin(); m_it != my_map.end(); ++m_it)
 				m_it->second.print();
 
-			spdlog::info("map size: {}", my_map.size() - 1);
+			spdlog::info("map size: {}", my_map.size() - 1);*/
 
+		}
+
+		static void fixed_ascci(std::string& data)
+		{
+			std::size_t found = data.find("'");
+			if (found != std::string::npos)
+				data.insert(found, "'");
 		}
 
 		static void set_type(ruc_data& ruc, const std::string& data, int& type)

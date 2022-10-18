@@ -12,7 +12,7 @@ namespace zar
 		std::string text_data = "";
 		int size = 0;
 
-		zar_map my_map = {};
+		zar_map ruc_map = {};
 	};
 
 }

@@ -19,16 +19,7 @@ namespace zar
 				{
 					spdlog::info("download zip");
 
-					ruc_data test;
-					test.debug();
-					test.print();
-
-					mysql::instance()->connect(*server);
-
-					empresa_dao* empresa = new empresa_dao();
-					empresa->insert(test);
-
-					/*if (zar::http::execute(file->url, file->out_filename))
+					if (zar::http::execute(file->url, file->out_filename))
 					{
 						spdlog::info("download {} success", file->url);
 						spdlog::info("read zip");
@@ -36,9 +27,19 @@ namespace zar
 						if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
 						{
 							spdlog::info("read {} success", file->name);
-							zar::tool::split_iterator(file->text_data, file->my_map);
+							zar::tool::split_iterator(file->text_data, file->ruc_map);
+							ruc_data test;
+							test.debug();
+							//test.print();
+
+							mysql::instance()->connect(*server);
+
+							empresa_dao* empresa = new empresa_dao();
+							empresa->insert(file->ruc_map);
+
+							spdlog::info("insert empresas success!");
 						}
-					}*/
+					}
 					flag->is_update = false;
 				}
 			}

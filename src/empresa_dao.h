@@ -38,13 +38,39 @@ namespace zar
 
 		void insert(const ruc_data& ruc)
 		{
-			sql->open();
 			const std::string query = get_template_insert() + get_query_insert(ruc) + ";";
+			execute(query);
+		}
+
+		void insert(zar_map& map)
+		{
+			std::string query = get_template_insert();
+			for (zar_map::iterator it = map.begin(); it != map.end(); ++it)
+			{
+				query += get_query_insert(it->second) + ",";
+			}
+			query.back() = ';';
+			//std::cout << query;
+			execute(query);
+
+			/*ruc_data test = map["20528060626"];
+			test.print();
+			const std::string query = get_template_insert() + get_query_insert(test) + ";";
+			std::cout << query;
+
+			execute(query);*/
+		}
+
+	private:
+
+		void execute(const std::string& query)
+		{
+			sql->open();
 			sql->execute_query(query);
 			sql->close();
 		}
 
-	private:
+
 		mysql* sql;
 	};
 }
