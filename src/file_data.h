@@ -15,5 +15,4 @@ namespace zar
 		zar_map my_map = {};
 	};
 
-
 }

@@ -1,25 +1,4 @@
-﻿#include "../config.h"
-
-#include <string>
-#include <thread>
-#include <future>
-#include <iostream>
-#include <stdio.h>
-#include <map>
-
-#include <spdlog\spdlog.h>
-
-#include "server_data.h"
-#include "flag_data.h"
-#include "ruc_data.h"
-#include "file_data.h"
-
-#include "http.h"
-#include "zip.h"
-#include "tool.h"
-
-#include "app.h"
-#include "console.h"
+﻿#include "zar.h"
 
 void console_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
 	zar::console::instance()->task(file, server, flag);
@@ -31,7 +10,6 @@ void app_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* fl
 
 int main()
 {
-
 	setlocale(LC_ALL, "es_ES");
 
 	// ------------------- DATA -------------------
@@ -41,9 +19,7 @@ int main()
 	// --------------------------------------------
 
 	std::thread m_thread(app_loop, file, server, flag);
-	std::future<void> m_async{};
-
-	m_async = std::async(std::launch::async, console_loop, file, server, flag);
+	std::future<void> m_async = std::async(std::launch::async, console_loop, file, server, flag);
 
 	if (m_async.valid())
 	{
@@ -51,6 +27,5 @@ int main()
 	}
 
 	m_thread.join();
-	spdlog::info("finish");
 	return 0;
 }
