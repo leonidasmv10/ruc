@@ -1,4 +1,10 @@
 #pragma once
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_stdlib.h"
+
 namespace zar
 {
     class i_gui
@@ -20,7 +26,7 @@ namespace zar
         }
         
     protected:
-        /*void begin(const char* title, const ImGuiWindowFlags flags = 0)
+        void begin(const char* title, const ImGuiWindowFlags flags = 0)
         {
             ImGui::Begin(title, NULL, flags);
         }
@@ -28,6 +34,6 @@ namespace zar
         void end()
         {
             ImGui::End();
-        }*/
+        }
     };
 }

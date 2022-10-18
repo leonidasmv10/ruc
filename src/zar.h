@@ -22,6 +22,9 @@
 #include "dao/empresa_dao.h"
 
 #include "gui/i_gui.h"
+#include "gui/insert_gui.h"
+#include "gui/update_gui.h"
+#include "gui/query_gui.h"
 
 #include "system/app.h"
 #include "system/console.h"

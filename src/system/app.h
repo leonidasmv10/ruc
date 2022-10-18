@@ -2,11 +2,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_stdlib.h"
-
 namespace zar
 {
 	class app {
@@ -21,8 +16,10 @@ namespace zar
 		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
 			spdlog::info("welcome");
-			init();
-
+			init_window();
+			init_imgui();
+			load_gui();
+			
 			while (!glfwWindowShouldClose(window))
 			{
 				ImGui_ImplOpenGL3_NewFrame();
@@ -34,53 +31,8 @@ namespace zar
 
 				dock_space();
 
-				ImGui::Begin("Insert");
-				{
-					ImGui::Separator();
-					ImGui::Text("--- INSERTAR ---");
-					ImGui::Separator();
-					ImGui::Text("FILE");
-					ImGui::Separator();
-					//ImGui::NewLine();
-
-					ImGui::Text("link: %s", file->url);
-					ImGui::Text("name: %s", file->name.c_str());
-					ImGui::Text("size: %i kb", file->size);
-					ImGui::Separator();
-
-					ImGui::Text("SERVER");
-					ImGui::Separator();
-					//ImGui::NewLine();
-
-					ImGui::InputText("url", server->url, IM_ARRAYSIZE(server->url));
-					ImGui::InputText("user", server->user, IM_ARRAYSIZE(server->user));
-					ImGui::InputText("password", server->pass, IM_ARRAYSIZE(server->pass));
-					ImGui::InputText("db", server->db, IM_ARRAYSIZE(server->db));
-					ImGui::Separator();
-
-					if (ImGui::Button("PROCESS"))
-					{
-						flag->is_update = true;
-					}
-				}
-				ImGui::End();
-				ImGui::Begin("Update");
-				{
-					ImGui::Separator();
-					ImGui::Text("--- ACTUALIZAR ---");
-					ImGui::Separator();
-				}
-				ImGui::End();
-
-				ImGui::Begin("Query");
-				{
-					ImGui::Separator();
-					ImGui::Text("--- CONSULTAR ---");
-					ImGui::Separator();
-				}
-				ImGui::End();
-
-				//ImGui::ShowDemoWindow();
+				for (const auto& it : m_gui)
+					it->render(file, server, flag);
 
 				ImGui::Render();
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -98,12 +50,11 @@ namespace zar
 				glfwSwapBuffers(window);
 				glfwPollEvents();
 			}
-
 		}
 
 	private:
 
-		void init()
+		inline void init_window()
 		{
 			if (glfwInit() == GL_FALSE) return;
 
@@ -117,8 +68,10 @@ namespace zar
 			glfwMakeContextCurrent(window);
 
 			if (GLenum err = glewInit()) return;
-			const char* glsl_version = "#version 330";
+		}
 
+		inline void init_imgui()
+		{
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -135,13 +88,21 @@ namespace zar
 				style.WindowRounding = 0.0f;
 				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 			}
+			const char* glsl_version = "#version 330";
 
 			ImGuiWindowFlags window_flags = 0;
 			ImGui_ImplGlfw_InitForOpenGL(window, true);
 			ImGui_ImplOpenGL3_Init(glsl_version);
 		}
 
-		void dock_space()
+		inline void load_gui()
+		{
+			m_gui.push_back(new insert_gui());
+			m_gui.push_back(new update_gui());
+			m_gui.push_back(new query_gui());
+		}
+
+		inline void dock_space()
 		{
 			static bool opt_fullscreen = true;
 			static bool opt_padding = false;
@@ -209,6 +170,7 @@ namespace zar
 		}
 
 		GLFWwindow* window;
+		std::vector<zar::i_gui*> m_gui;
 
 	};
 }
