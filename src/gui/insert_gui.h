@@ -48,7 +48,7 @@ namespace zar
 
 				if (ImGui::Button("PROCESS"))
 				{
-					flag->is_update = true;
+					flag->is_process = true;
 				}
 			}
 			end();

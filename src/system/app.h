@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 namespace zar
 {
@@ -19,14 +17,14 @@ namespace zar
 			init_window();
 			init_imgui();
 			load_gui();
-			
+
 			while (!glfwWindowShouldClose(window))
 			{
 				ImGui_ImplOpenGL3_NewFrame();
 				ImGui_ImplGlfw_NewFrame();
 				ImGui::NewFrame();
 
-				glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+				glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 
 				dock_space();
@@ -106,6 +104,10 @@ namespace zar
 		{
 			static bool opt_fullscreen = true;
 			static bool opt_padding = false;
+			static bool theme_dark = true;
+			static bool theme_classic = false;
+			static bool theme_light = false;
+
 			static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -158,9 +160,30 @@ namespace zar
 			{
 				if (ImGui::BeginMenu("Options"))
 				{
-					//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 					ImGui::MenuItem("Padding", NULL, &opt_padding);
-					//ImGui::Separator();
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::BeginMenu("Theme"))
+				{
+					if (ImGui::MenuItem("Dark", NULL, &theme_dark))
+					{
+						ImGui::StyleColorsDark();
+						theme_classic = false;
+						theme_light = false;
+					}
+					if(ImGui::MenuItem("Classic", NULL, &theme_classic))
+					{
+						ImGui::StyleColorsClassic();
+						theme_dark = false;
+						theme_light = false;
+					}
+					if (ImGui::MenuItem("Light", NULL, &theme_light))
+					{
+						ImGui::StyleColorsLight();
+						theme_dark = false;
+						theme_classic = false;
+					}
 					ImGui::EndMenu();
 				}
 

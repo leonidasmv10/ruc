@@ -4,8 +4,12 @@
 #include <thread>
 #include <future>
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <map>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include <spdlog\spdlog.h>
 

@@ -26,6 +26,8 @@ namespace zar
 				ImGui::Separator();
 				ImGui::Text("--- ACTUALIZAR ---");
 				ImGui::Separator();
+				
+
 			}
 			end();
 		}

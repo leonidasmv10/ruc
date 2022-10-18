@@ -13,10 +13,14 @@ namespace zar
 
 		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
+			empresa = new empresa_dao();
+
 			while (true)
 			{
-				if (flag->is_update)
+				if (flag->is_process)
 				{
+					flag->is_process = false;
+
 					spdlog::info("download zip");
 
 					if (zar::http::execute(file->url, file->out_filename))
@@ -28,19 +32,14 @@ namespace zar
 						{
 							spdlog::info("read {} success", file->name);
 							zar::algorithms::split_iterator(file->text_data, file->ruc_map);
-							ruc_data test;
-							test.debug();
-							//test.print();
-
 							mysql::instance()->connect(*server);
-
-							empresa_dao* empresa = new empresa_dao();
 							empresa->insert(file->ruc_map);
 
 							spdlog::info("insert empresas success!");
+
+							
 						}
 					}
-					flag->is_update = false;
 				}
 			}
 
@@ -48,6 +47,7 @@ namespace zar
 
 	private:
 
+		empresa_dao* empresa;
 
 	};
 }

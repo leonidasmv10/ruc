@@ -73,7 +73,7 @@ namespace zar
 		static void fixed_ascci(std::string& data)
 		{
 			std::size_t found = data.find("'");
-			if (found != std::string::npos)
+			if (found != std::string::npos && data[found] != data[found + 1])
 				data.insert(found, "'");
 		}
 
