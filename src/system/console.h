@@ -27,7 +27,7 @@ namespace zar
 						if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
 						{
 							spdlog::info("read {} success", file->name);
-							zar::tool::split_iterator(file->text_data, file->ruc_map);
+							zar::algorithms::split_iterator(file->text_data, file->ruc_map);
 							ruc_data test;
 							test.debug();
 							//test.print();

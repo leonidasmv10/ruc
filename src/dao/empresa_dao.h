@@ -45,20 +45,25 @@ namespace zar
 		void insert(zar_map& map)
 		{
 			std::string query = get_template_insert();
-			for (zar_map::iterator it = map.begin(); it != map.end(); ++it)
+			unsigned count = 1;
+			for (zar_map::const_iterator it = map.cbegin(); it != map.cend(); ++it)
 			{
 				query += get_query_insert(it->second) + ",";
+				if (count % 10 == 0)
+				{
+					query.back() = ';';
+					execute(query);
+					query = get_template_insert();
+					std::this_thread::sleep_for(std::chrono::seconds(10));
+				}
+				count++;
 			}
-			query.back() = ';';
-			//std::cout << query;
-			execute(query);
 
-			/*ruc_data test = map["20528060626"];
-			test.print();
-			const std::string query = get_template_insert() + get_query_insert(test) + ";";
-			std::cout << query;
-
-			execute(query);*/
+			{
+				query.back() = ';';
+				execute(query);
+				query = get_template_insert();
+			}
 		}
 
 	private:
@@ -69,7 +74,6 @@ namespace zar
 			sql->execute_query(query);
 			sql->close();
 		}
-
 
 		mysql* sql;
 	};

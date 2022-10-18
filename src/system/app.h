@@ -34,10 +34,10 @@ namespace zar
 
 				dock_space();
 
-				ImGui::Begin("Update");
+				ImGui::Begin("Insert");
 				{
 					ImGui::Separator();
-					ImGui::Text("--- ACTUALIZAR ---");
+					ImGui::Text("--- INSERTAR ---");
 					ImGui::Separator();
 					ImGui::Text("FILE");
 					ImGui::Separator();
@@ -58,10 +58,25 @@ namespace zar
 					ImGui::InputText("db", server->db, IM_ARRAYSIZE(server->db));
 					ImGui::Separator();
 
-					if (ImGui::Button("Update"))
+					if (ImGui::Button("PROCESS"))
 					{
 						flag->is_update = true;
 					}
+				}
+				ImGui::End();
+				ImGui::Begin("Update");
+				{
+					ImGui::Separator();
+					ImGui::Text("--- ACTUALIZAR ---");
+					ImGui::Separator();
+				}
+				ImGui::End();
+
+				ImGui::Begin("Query");
+				{
+					ImGui::Separator();
+					ImGui::Text("--- CONSULTAR ---");
+					ImGui::Separator();
 				}
 				ImGui::End();
 

@@ -4,7 +4,7 @@
 
 namespace zar
 {
-	class tool {
+	class algorithms {
 	public:
 
 		static void print(const std::string& data)

@@ -9,17 +9,19 @@
 
 #include <spdlog\spdlog.h>
 
-#include "server_data.h"
-#include "flag_data.h"
-#include "ruc_data.h"
-#include "file_data.h"
+#include "data/server_data.h"
+#include "data/flag_data.h"
+#include "data/ruc_data.h"
+#include "data/file_data.h"
 
-#include "http.h"
-#include "zip.h"
-#include "tool.h"
-#include "mysql.h"
+#include "tool/http.h"
+#include "tool/zip.h"
+#include "tool/algorithms.h"
 
-#include "empresa_dao.h"
+#include "dao/mysql.h"
+#include "dao/empresa_dao.h"
 
-#include "app.h"
-#include "console.h"
+#include "gui/i_gui.h"
+
+#include "system/app.h"
+#include "system/console.h"

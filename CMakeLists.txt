@@ -11,14 +11,38 @@ project(ruc)
 
 file(GLOB_RECURSE MAIN
          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp 
-         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 
-file(GLOB_RECURSE FILES  
-    ${CMAKE_CURRENT_SOURCE_DIR}/files/*
+file(GLOB_RECURSE dao 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/dao/*.h
 )
 
-source_group("files" FILES ${FILES})
+file(GLOB_RECURSE data
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/data/*.h
+)
+
+file(GLOB_RECURSE gui  
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/gui/*.h
+)
+
+file(GLOB_RECURSE system  
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/system/*.h
+)
+
+file(GLOB_RECURSE tool  
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tool/*.h
+)
+
+file(GLOB_RECURSE zar  
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/zar.h
+)
+
+source_group("Files/dao" FILES ${dao})
+source_group("Files/data" FILES ${data})
+source_group("Files/gui" FILES ${gui})
+source_group("Files/system" FILES ${system})
+source_group("Files/tool" FILES ${tool})
+source_group("Files" FILES ${zar})
 
 find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
@@ -32,7 +56,7 @@ link_directories(${CMAKE_SOURCE_DIR}/vendor/lib)
 
 configure_file(${PROJECT_SOURCE_DIR}/config.h.in ${PROJECT_SOURCE_DIR}/config.h)
 
-add_executable(${PROJECT_NAME} ${MAIN})
+add_executable(${PROJECT_NAME} ${MAIN} ${dao} ${data} ${gui} ${system} ${tool} ${zar})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
 libcrypto libssl mysqlcppconn mysqlcppconn8) 
