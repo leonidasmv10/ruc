@@ -31,27 +31,22 @@ namespace zar
 				std::string(ruc.kilometro) + "' )";
 		}
 
-		std::string get_file_insert(const ruc_data& ruc)
+		std::string get_query_delete(const std::string& ruc)
 		{
-			return
-				std::string(ruc.ruc) + "|" +
-				std::string(ruc.razon_social) + "|" +
-				std::string(ruc.estado_contribuyente) + "|" +
-				std::string(ruc.condicion_domicilio) + "|" +
-				std::string(ruc.ubigeo) + "|" +
-				std::string(ruc.tipo_via) + "|" +
-				std::string(ruc.nombre_via) + "|" +
-				std::string(ruc.codigo_zona) + "|" +
-				std::string(ruc.tipo_zona) + "|" +
-				std::string(ruc.numero) + "|" +
-				std::string(ruc.interior) + "|" +
-				std::string(ruc.lote) + "|" +
-				std::string(ruc.departamento) + "|" +
-				std::string(ruc.manzana) + "|" +
-				std::string(ruc.kilometro) + "|";
+			return "ruc='" + ruc + "'";
 		}
 
 		const std::string get_template_insert()
+		{
+			return "INSERT INTO empresas VALUES ";
+		}
+
+		const std::string get_template_delete()
+		{
+			return "DELETE FROM empresas WHERE ";
+		}
+
+		const std::string get_template_update()
 		{
 			return "INSERT INTO empresas VALUES ";
 		}
@@ -146,6 +141,9 @@ namespace zar
 
 		void update()
 		{
+			std::string query_insert = get_template_insert();
+			std::string query_delete = get_template_delete();
+
 			std::string name = "", data = "";
 			int size = 0;
 
@@ -166,6 +164,9 @@ namespace zar
 						{
 							if (c_it->second != it->second)
 							{
+								query_delete += get_query_delete(c_it->first) + " or ";
+								query_insert += get_query_insert(it->second) + ",";
+
 								spdlog::warn("------------------------");
 								spdlog::warn("actulizar empresa");
 								spdlog::warn("EMPRESA 1");
@@ -178,12 +179,26 @@ namespace zar
 						else
 						{
 							spdlog::warn("nueva empresa");
+							query_insert += get_query_insert(it->second) + ",";
 							it->second.print();
 						}
-
 					}
+				
 				}
 			}
+
+			query_delete.pop_back();
+			query_delete.pop_back();
+			query_delete.pop_back();
+
+			query_delete.back() = ';';
+			query_insert.back() = ';';
+
+			std::cout << query_insert << "\n";
+			std::cout << query_delete << "\n";
+
+			execute(query_delete);
+			execute(query_insert);
 		}
 
 	private:

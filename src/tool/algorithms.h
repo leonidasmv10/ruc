@@ -26,6 +26,27 @@ namespace zar
 			//if (itBegin != itEnd)
 		}
 
+		static std::string get_file_insert(const ruc_data& ruc)
+		{
+			return
+				std::string(ruc.ruc) + "|" +
+				std::string(ruc.razon_social) + "|" +
+				std::string(ruc.estado_contribuyente) + "|" +
+				std::string(ruc.condicion_domicilio) + "|" +
+				std::string(ruc.ubigeo) + "|" +
+				std::string(ruc.tipo_via) + "|" +
+				std::string(ruc.nombre_via) + "|" +
+				std::string(ruc.codigo_zona) + "|" +
+				std::string(ruc.tipo_zona) + "|" +
+				std::string(ruc.numero) + "|" +
+				std::string(ruc.interior) + "|" +
+				std::string(ruc.lote) + "|" +
+				std::string(ruc.departamento) + "|" +
+				std::string(ruc.manzana) + "|" +
+				std::string(ruc.kilometro) + "|";
+		}
+
+
 		static void split_iterator(const std::string& data, zar::zar_map& my_map)
 		{
 			std::string::const_iterator it_begin = data.begin() + 188;

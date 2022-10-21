@@ -14,7 +14,6 @@ namespace zar
 		void task(file_data*& file, server_data*& server, flag_data*& flag)
 		{
 			empresa = new empresa_dao();
-			//empresa->load();
 
 			while (true)
 			{
@@ -49,7 +48,7 @@ namespace zar
 					flag->is_process_update = false;
 
 					spdlog::info("update");
-
+					mysql::instance()->connect(*server);
 					empresa->update();
 				}
 
