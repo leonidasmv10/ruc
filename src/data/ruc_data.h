@@ -4,7 +4,7 @@ namespace zar
 {
 	struct ruc_data
 	{
-		char ruc[12];
+		char ruc[13];
 		char razon_social[300];
 		char estado_contribuyente[50];
 		char condicion_domicilio[50];
@@ -76,5 +76,19 @@ namespace zar
 			std::cout << "manzana: " << manzana << "\n";
 			std::cout << "kilometro: " << kilometro << "\n";
 		}
+
+		bool operator == (const ruc_data& value)
+		{
+			if (strcmp(ruc, value.ruc) != 0) { return false; }
+			return true;
+		}
+
+		bool operator != (const ruc_data& value)
+		{
+			if (strcmp(ruc, value.ruc) != 0) { return true; }
+			if (strcmp(razon_social, value.razon_social) != 0) { return true; }
+			return false;
+		}
+
 	};
 }

@@ -27,7 +27,10 @@ namespace zar
 				ImGui::Text("--- ACTUALIZAR ---");
 				ImGui::Separator();
 				
-
+				if (ImGui::Button("PROCESS"))
+				{
+					flag->is_process_update = true;
+				}
 			}
 			end();
 		}

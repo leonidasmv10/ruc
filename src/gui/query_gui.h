@@ -26,6 +26,10 @@ namespace zar
 				ImGui::Separator();
 				ImGui::Text("--- CONSULTAR ---");
 				ImGui::Separator();
+				if (ImGui::Button("PROCESS"))
+				{
+					flag->is_process_query = true;
+				}
 			}
 			end();
 

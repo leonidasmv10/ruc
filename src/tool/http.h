@@ -8,8 +8,8 @@ namespace zar
 	public:
 
 		static bool execute(const char* url, const char* out_file_name)
-		{
-			/*CURL* curl;
+		{/*
+			CURL* curl;
 			FILE* fp;
 			CURLcode res;
 			curl = curl_easy_init();
