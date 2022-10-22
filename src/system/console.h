@@ -36,7 +36,7 @@ namespace zar
 							spdlog::info("iterator sucess");
 							mysql::instance()->connect(*server);
 							spdlog::warn("init insert process", file->name);
-							empresa->insert(file->ruc_map);
+							//empresa->insert(file->ruc_map);
 							spdlog::info("insert empresas success!");
 
 						}
@@ -49,7 +49,7 @@ namespace zar
 
 					spdlog::info("update");
 					mysql::instance()->connect(*server);
-					empresa->update();
+					//empresa->update();
 				}
 
 				else if (flag->is_process_query)

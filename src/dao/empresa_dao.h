@@ -59,84 +59,49 @@ namespace zar
 
 		void get_data()
 		{
-			//stmt = con->createStatement();
-			//res = stmt->executeQuery("SELECT 'Hello World!' AS _message");
-			//while (res->next()) {
-			//	cout << "\t... MySQL replies: ";
-			//	/* Access column data by alias or column name */
-			//	cout << res->getString("_message") << endl;
-			//	cout << "\t... MySQL says it again: ";
-			//	/* Access column data by numeric offset, 1 is the first column */
-			//	cout << res->getString(1) << endl;
+			std::string ruc = "20450799026";
+
+			std::string query = "SELECT * FROM empresas WHERE ruc=\"" + ruc + "\"";
+			std::unique_ptr<sql::ResultSet> res(execute_query(query));
+
+			//ruc_data ruc;
+			res->afterLast();
+
+			while (res->previous())
+			{
+				std::cout << "\t... ID: " << res->getInt("id") << std::endl;
+				std::cout << "\t... RUC: " << res->getString(1) << std::endl;
+				std::cout << "\t... RAZON SOCIAL: " << res->getString(2) << std::endl;
+				std::cout << "\t... ESTADO CONTRIBUYENTE: " << res->getString(3) << std::endl;
+				std::cout << "\t... CONDICION DOMICILIO: " << res->getString(4) << std::endl;
+			}
+
+			//	stmt = con->createStatement();
+			//	stmt->execute("DROP TABLE IF EXISTS test");
+			//	stmt->execute("CREATE TABLE test(id INT)");
+			//	delete stmt;
+
+			//	/* '?' is the supported placeholder syntax */
+			//	pstmt = con->prepareStatement("INSERT INTO test(id) VALUES (?)");
+			//	for (int i = 1; i <= 10; i++) {
+			//		pstmt->setInt(1, i);
+			//		pstmt->executeUpdate();
+			//	}
+			//	delete pstmt;
+
+			//	/* Select in ascending order */
+			//	pstmt = con->prepareStatement("SELECT id FROM test ORDER BY id ASC");
+			//	res = pstmt->executeQuery();
+
+			//	/* Fetch in reverse = descending order! */
+			//	res->afterLast();
+			//	while (res->previous())
+			//		cout << "\t... MySQL counts: " << res->getInt("id") << endl;
+			//	delete res;
+
+			//	delete pstmt;
+			//	delete con;
 			//}
-
-		//	stmt = con->createStatement();
-		//	stmt->execute("DROP TABLE IF EXISTS test");
-		//	stmt->execute("CREATE TABLE test(id INT)");
-		//	delete stmt;
-
-		//	/* '?' is the supported placeholder syntax */
-		//	pstmt = con->prepareStatement("INSERT INTO test(id) VALUES (?)");
-		//	for (int i = 1; i <= 10; i++) {
-		//		pstmt->setInt(1, i);
-		//		pstmt->executeUpdate();
-		//	}
-		//	delete pstmt;
-
-		//	/* Select in ascending order */
-		//	pstmt = con->prepareStatement("SELECT id FROM test ORDER BY id ASC");
-		//	res = pstmt->executeQuery();
-
-		//	/* Fetch in reverse = descending order! */
-		//	res->afterLast();
-		//	while (res->previous())
-		//		cout << "\t... MySQL counts: " << res->getInt("id") << endl;
-		//	delete res;
-
-		//	delete pstmt;
-		//	delete con;
-		//}
-		}
-
-		void insert(zar_map& map)
-		{
-			std::string query = get_template_insert();
-
-			/*std::ofstream registers;
-			registers.open("registers.txt");*/
-
-			unsigned count = 1;
-
-			for (zar_map::const_iterator it = map.cbegin(); it != map.cend(); ++it)
-			{
-				query += get_query_insert(it->second) + ",";
-				/*std::cout << query;
-				system("pause");*/
-
-				if (count >= 1000)
-				{
-					query.back() = ';';
-					execute(query);
-					//registers << data_file;
-
-					spdlog::info("created {} dates sucess", 1000);
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-
-					query = get_template_insert();
-					count = 0;
-				}
-				count++;
-			}
-
-			{
-				query.back() = ';';
-				execute(query);
-			}
-
-			//registers.close();
-			//remove(localFileTxtTmp);
-			rename("ruc.zip", "ruc_last.zip");
-
 		}
 
 		void update()
@@ -203,8 +168,16 @@ namespace zar
 		void execute(const std::string& query)
 		{
 			sql->open();
-			sql->execute_query(query);
+			sql->execute(query);
 			sql->close();
+		}
+
+		sql::ResultSet* execute_query(const std::string& query)
+		{
+			sql->open();
+			sql::ResultSet* res = sql->execute_query(query);
+			sql->close();
+			return res;
 		}
 
 		mysql* sql;

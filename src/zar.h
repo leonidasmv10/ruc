@@ -29,6 +29,7 @@
 #include "gui/insert_gui.h"
 #include "gui/update_gui.h"
 #include "gui/query_gui.h"
+#include "gui/setting_gui.h"
 
 #include "system/app.h"
 #include "system/console.h"

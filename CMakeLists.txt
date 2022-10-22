@@ -5,7 +5,7 @@ SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems
 SET(URL 127.0.0.1)
 SET(USER root)
 SET(PASS )
-SET(DB bflexpe)
+SET(DB test)
 
 project(ruc)
 

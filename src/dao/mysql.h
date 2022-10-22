@@ -69,12 +69,28 @@ namespace zar
 			}
 		}
 
-		void execute_query(const std::string& query)
+		void execute(const std::string& query)
 		{
 			try
 			{
 				std::unique_ptr<sql::PreparedStatement> pstmt(connection->prepareStatement(query));
 				pstmt->execute();
+			}
+			catch (sql::SQLException& e)
+			{
+				spdlog::error("# ERR: SQLException in {}", __FILE__);
+				spdlog::error("({}) on line {}", __FUNCTION__, __LINE__);
+				spdlog::error("# ERR: {}", e.what());
+				spdlog::error(" (MySQL error code: {}, SQLState: {})", e.getErrorCode(), e.getSQLState());
+			}
+		}
+
+		sql::ResultSet* execute_query(const std::string& query)
+		{
+			try
+			{
+				std::unique_ptr<sql::PreparedStatement> pstmt(connection->prepareStatement(query));
+				return pstmt->executeQuery();
 			}
 			catch (sql::SQLException& e)
 			{

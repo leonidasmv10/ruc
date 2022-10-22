@@ -24,17 +24,7 @@ namespace zar
 			begin("Update");
 			{
 				ImGui::Separator();
-				ImGui::Text("--- ACTUALIZAR ---");
-				ImGui::Separator();
-
-				ImGui::Text("SERVER");
-				ImGui::Separator();
-				//ImGui::NewLine();
-
-				ImGui::InputText("url", server->url, IM_ARRAYSIZE(server->url));
-				ImGui::InputText("user", server->user, IM_ARRAYSIZE(server->user));
-				ImGui::InputText("password", server->pass, IM_ARRAYSIZE(server->pass));
-				ImGui::InputText("db", server->db, IM_ARRAYSIZE(server->db));
+				ImGui::Text("--- UPDATE ---");
 				ImGui::Separator();
 				
 				if (ImGui::Button("PROCESS"))

@@ -29,6 +29,8 @@ namespace zar
 
 				dock_space();
 
+				ImGui::ShowDemoWindow();
+
 				for (const auto& it : m_gui)
 					it->render(file, server, flag);
 
@@ -98,6 +100,7 @@ namespace zar
 			m_gui.push_back(new insert_gui());
 			m_gui.push_back(new update_gui());
 			m_gui.push_back(new query_gui());
+			m_gui.push_back(new setting_gui());
 		}
 
 		inline void dock_space()

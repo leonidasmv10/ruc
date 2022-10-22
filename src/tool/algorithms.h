@@ -88,31 +88,12 @@ namespace zar
 				{
 					it_begin = it + 1;
 					type = 1;
-					//my_map[std::string(new_ruc.ruc)] = new_ruc;
 					my_map.insert(std::pair<std::string, ruc_data>(std::string(new_ruc.ruc), new_ruc));
-
-					/*if (std::string(new_ruc.ruc) == "20508088826")
-					{
-						spdlog::warn("F1");
-						new_ruc.print();
-					}
-
-					if (std::string(my_map[new_ruc.ruc].ruc) == "20508088826")
-					{
-						spdlog::warn("F2");
-						new_ruc.print();
-					}*/
 				}
 			}
 
 			set_type(new_ruc, std::string(it_begin, it_end), type);
 			my_map[new_ruc.ruc] = new_ruc;
-
-			/*system("pause");
-			for (auto m_it = my_map.begin(); m_it != my_map.end(); ++m_it)
-				spdlog::info("{}", m_it->second.ruc);
-
-			spdlog::info("map size: {}", my_map.size() - 1);*/
 
 		}
 
