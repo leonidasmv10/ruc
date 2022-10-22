@@ -63,8 +63,8 @@ int main()
 			spdlog::info("read {} success", file->name);
 			spdlog::warn("iterator init");
 
-			std::string::iterator it_begin = data.begin() + 188;
-			const std::string::iterator it_end = data.end();
+			std::string::const_iterator it_begin = data.begin() + 188;
+			const std::string::const_iterator it_end = data.end();
 
 			zar::ruc_data new_ruc;
 			std::string r_data = "";
@@ -72,9 +72,8 @@ int main()
 			bool is_one_quote = false;
 			bool is_two_quote = false;
 
-			for (std::string::iterator it = it_begin; it != it_end; ++it)
+			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
 			{
-
 				if (*it == '|')
 				{
 					r_data = std::string(it_begin, it);
@@ -90,10 +89,6 @@ int main()
 					zar::algorithms::set_type(new_ruc, r_data, type);
 					it_begin = it + 1;
 				}
-				/*else if (*it == 'Ñ')
-				{
-					*it = 165;
-				}*/
 				else if (*it == 39)
 				{
 					is_one_quote = true;

@@ -49,6 +49,6 @@ cmake -G "Visual Studio 17 2022" -B "build"
 
 * Antes de compilar, debe de tener un servidor phpmyadmin, y si en caso no lo tenga, puede hacerlo de manera local usando [xampp]( https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/), aseguresé de usar una versión con cotejamiento latin1_swedish_ci u similar, ya que sino tendrá errores con las ñ y tildes.
 
-* Versión de xampp usado en este proyecto: v7.0.15
+* Versión de xampp usado en este proyecto: v7.0.15, v5.6.39
 
 * Una vez instalado el xampp, crea una base de datos e importa el archivo [empresas.sql](https://github.com/devgrids/ruc/blob/main/files/empresas.sql) que se encuentra en la carpeta files del proyecto, de esta manera tiene la tabla creada y listo para compilar.

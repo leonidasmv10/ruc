@@ -167,13 +167,10 @@ namespace zar
 								query_delete += get_query_delete(c_it->first) + " or ";
 								query_insert += get_query_insert(it->second) + ",";
 
-								spdlog::warn("------------------------");
-								spdlog::warn("actulizar empresa");
-								spdlog::warn("empresa antigua");
+								spdlog::warn("old company");
 								c_it->second.print();
-								spdlog::warn("empresa actualizada");
+								spdlog::warn("updated company");
 								it->second.print();
-								spdlog::warn("------------------------");
 							}
 						}
 						else
@@ -183,7 +180,7 @@ namespace zar
 							it->second.print();
 						}
 					}
-				
+
 				}
 			}
 
