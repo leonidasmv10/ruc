@@ -56,16 +56,21 @@ namespace zar
 			ruc_data new_ruc;
 
 			std::string r_data = "";
-			bool is_ascii = false;
+			bool is_one_quote = false;
+			bool is_two_quote = false;
 
 			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
 			{
 				if (*it == '|')
 				{
 					r_data = std::string(it_begin, it);
-					if (is_ascii) {
-						fixed_ascci(r_data);
-						is_ascii = false;
+					if (is_one_quote) {
+						fixed_one_quote(r_data);
+						is_one_quote = false;
+					}
+					else if (is_two_quote) {
+						fixed_two_quote(r_data);
+						is_two_quote = false;
 					}
 
 					set_type(new_ruc, r_data, type);
@@ -73,7 +78,11 @@ namespace zar
 				}
 				else if (*it == 39)
 				{
-					is_ascii = true;
+					is_one_quote = true;
+				}
+				else if (*it == 34)
+				{
+					is_two_quote = true;
 				}
 				else if (*it == '\n')
 				{
@@ -107,15 +116,34 @@ namespace zar
 
 		}
 
-		static void fixed_ascci(std::string& data)
+		static void fixed_one_quote(std::string& data)
 		{
 			unsigned i = 1;
 			unsigned size = data.size();
 
 			for (; i < size; i++)
 			{
-				if (data[i] == 39 && data[i] != data[i - 1]) {
+				if (data[i] == 39) {
 					data.insert(i, "'");
+					i++;
+				}
+			}
+		}
+
+		static void fixed_two_quote(std::string& data)
+		{
+			unsigned i = 0;
+			unsigned size = data.size();
+
+			const char c = 92;
+			std::string r = "";
+			r += c;
+
+			for (; i < size - 1; i++)
+			{
+				if (data[i] == 34) {
+					data.insert(i, r);
+					i++;
 				}
 			}
 		}

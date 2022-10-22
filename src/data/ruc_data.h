@@ -77,16 +77,23 @@ namespace zar
 			std::cout << "kilometro: " << kilometro << "\n";
 		}
 
-		bool operator == (const ruc_data& value)
-		{
-			if (strcmp(ruc, value.ruc) != 0) { return false; }
-			return true;
-		}
-
 		bool operator != (const ruc_data& value)
 		{
 			if (strcmp(ruc, value.ruc) != 0) { return true; }
 			if (strcmp(razon_social, value.razon_social) != 0) { return true; }
+			if (strcmp(estado_contribuyente, value.estado_contribuyente) != 0) { return true; }
+			if (strcmp(condicion_domicilio, value.condicion_domicilio) != 0) { return true; }
+			if (strcmp(ubigeo, value.ubigeo) != 0) { return true; }
+			if (strcmp(tipo_via, value.tipo_via) != 0) { return true; }
+			if (strcmp(nombre_via, value.nombre_via) != 0) { return true; }
+			if (strcmp(codigo_zona, value.codigo_zona) != 0) { return true; }
+			if (strcmp(tipo_zona, value.tipo_zona) != 0) { return true; }
+			if (strcmp(numero, value.numero) != 0) { return true; }
+			if (strcmp(interior, value.interior) != 0) { return true; }
+			if (strcmp(lote, value.lote) != 0) { return true; }
+			if (strcmp(departamento, value.departamento) != 0) { return true; }
+			if (strcmp(manzana, value.manzana) != 0) { return true; }
+			if (strcmp(kilometro, value.kilometro) != 0) { return true; }
 			return false;
 		}
 

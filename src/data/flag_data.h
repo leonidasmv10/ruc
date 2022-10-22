@@ -7,7 +7,6 @@ namespace zar
 		bool is_process_insert = false;
 		bool is_process_update = false;
 		bool is_process_query = false;
-
 	};
 
 }

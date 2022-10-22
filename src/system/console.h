@@ -57,6 +57,8 @@ namespace zar
 					flag->is_process_query = false;
 
 					spdlog::info("query");
+					mysql::instance()->connect(*server);
+					empresa->get_data();
 				}
 			}
 

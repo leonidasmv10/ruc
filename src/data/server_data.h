@@ -8,7 +8,6 @@ namespace zar
 		char user[20] = ZAR_USER;
 		char pass[30] = ZAR_PASS;
 		char db[20] = ZAR_DB;
-
 	};
 
 }

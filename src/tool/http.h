@@ -8,7 +8,7 @@ namespace zar
 	public:
 
 		static bool execute(const char* url, const char* out_file_name)
-		{/*
+		{
 			CURL* curl;
 			FILE* fp;
 			CURLcode res;
@@ -24,8 +24,7 @@ namespace zar
 				fclose(fp);
 				return true;
 			}
-			return false;*/
-			return true;
+			return false;
 		}
 
 	private:

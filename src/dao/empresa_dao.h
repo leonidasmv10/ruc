@@ -158,7 +158,7 @@ namespace zar
 					algorithms::split_iterator(data, ruc_map);
 					for (zar_map::iterator it = ruc_map.begin(); it != ruc_map.end(); ++it)
 					{
-						spdlog::info("ruc: {}", it->first);
+						//spdlog::info("ruc: {}", it->first);
 						zar_map::iterator c_it = ruc_last_map.find(it->first);
 						if (c_it != ruc_last_map.end())
 						{
@@ -169,9 +169,9 @@ namespace zar
 
 								spdlog::warn("------------------------");
 								spdlog::warn("actulizar empresa");
-								spdlog::warn("EMPRESA 1");
+								spdlog::warn("empresa antigua");
 								c_it->second.print();
-								spdlog::warn("EMPRESA 2");
+								spdlog::warn("empresa actualizada");
 								it->second.print();
 								spdlog::warn("------------------------");
 							}
