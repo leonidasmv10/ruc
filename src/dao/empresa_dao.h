@@ -236,7 +236,6 @@ namespace zar
 
 					for (zar_map::iterator it = ruc_map.begin(); it != ruc_map.end(); ++it)
 					{
-						spdlog::info("ruc: {}", it->first);
 						zar_map::iterator c_it = ruc_map_last.find(it->first);
 						if (c_it != ruc_map_last.end())
 						{
@@ -262,6 +261,9 @@ namespace zar
 				}
 			}
 
+			remove(file->out_filename_last);
+			rename(file->out_filename, file->out_filename_last);
+
 			query_delete.pop_back();
 			query_delete.pop_back();
 			query_delete.pop_back();
@@ -269,11 +271,13 @@ namespace zar
 			query_delete.back() = ';';
 			query_insert.back() = ';';
 
-			std::cout << query_insert << "\n";
-			std::cout << query_delete << "\n";
+			//std::cout << query_insert << "\n";
+			//std::cout << query_delete << "\n";
 
 			execute(query_delete);
 			execute(query_insert);
+
+			
 		}
 
 		int get_count()
