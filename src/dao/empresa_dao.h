@@ -6,6 +6,12 @@ namespace zar
 	class empresa_dao {
 	public:
 
+		static empresa_dao* instance()
+		{
+			static empresa_dao instance;
+			return &instance;
+		}
+
 		empresa_dao()
 		{
 			sql = mysql::instance();
@@ -13,7 +19,7 @@ namespace zar
 
 		std::string get_query_insert(const ruc_data& ruc)
 		{
-			return "(default, '" +
+			return "('" +
 				std::string(ruc.ruc) + "', '" +
 				std::string(ruc.razon_social) + "', '" +
 				std::string(ruc.estado_contribuyente) + "', '" +
@@ -46,9 +52,31 @@ namespace zar
 			return "DELETE FROM empresas WHERE ";
 		}
 
-		const std::string get_template_update()
+		const std::string get_template_delete_table()
 		{
-			return "INSERT INTO empresas VALUES ";
+			return "DROP TABLE IF EXISTS empresas;";
+		}
+
+		const std::string get_template_table()
+		{
+			return
+				"CREATE TABLE empresas (" +
+				std::string("ruc varchar(11) NOT NULL PRIMARY KEY,") +
+				"razon_social varchar(500) NOT NULL," +
+				"estado_contribuyente varchar(50) NOT NULL," +
+				"condicion_domicilio varchar(50) NOT NULL," +
+				"ubigeo varchar(50) NOT NULL," +
+				"tipo_via varchar(50) NOT NULL," +
+				"nombre_via varchar(50) NOT NULL," +
+				"codigo_zona varchar(50) NOT NULL," +
+				"tipo_zona varchar(50) NOT NULL," +
+				"numero varchar(50) NOT NULL," +
+				"interior varchar(50) NOT NULL," +
+				"lote varchar(50) NOT NULL," +
+				"departamento varchar(50) NOT NULL," +
+				"manzana varchar(50) NOT NULL," +
+				"kilometro varchar(50) NOT NULL" +
+				") ENGINE = InnoDB DEFAULT CHARSET = latin1; ";
 		}
 
 		void insert(const ruc_data& ruc)
@@ -57,75 +85,160 @@ namespace zar
 			execute(query);
 		}
 
-		void get_data()
+		void insert(file_data*& file)
 		{
-			std::string ruc = "20450799026";
+			unsigned c = 0;
+			unsigned n_partition = 1000;
 
+			if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
+			{
+				zar::empresa_dao* e_dao = new zar::empresa_dao();
+				std::string data = file->text_data;
+
+				std::string query = e_dao->get_template_insert();
+				int type = 1;
+
+				spdlog::info("read {} success", file->name);
+				spdlog::warn("iterator init");
+
+				std::string::const_iterator it_begin = data.begin() + 188;
+				const std::string::const_iterator it_end = data.end();
+
+				zar::ruc_data new_ruc;
+				std::string r_data = "";
+
+				bool is_one_quote = false;
+				bool is_two_quote = false;
+
+				for (std::string::const_iterator it = it_begin; it != it_end; ++it)
+				{
+					if (*it == '|')
+					{
+						r_data = std::string(it_begin, it);
+						if (is_one_quote) {
+							zar::algorithms::fixed_one_quote(r_data);
+							is_one_quote = false;
+						}
+						else if (is_two_quote) {
+							zar::algorithms::fixed_two_quote(r_data);
+							is_two_quote = false;
+						}
+
+						zar::algorithms::set_type(new_ruc, r_data, type);
+						it_begin = it + 1;
+					}
+					else if (*it == 39)
+					{
+						is_one_quote = true;
+					}
+					else if (*it == 34)
+					{
+						is_two_quote = true;
+					}
+					else if (*it == '\n')
+					{
+						query += e_dao->get_query_insert(new_ruc) + ",";
+						c++;
+
+						if (c >= n_partition)
+						{
+							c = 0;
+							query.back() = ';';
+
+							sql->open();
+							sql->execute_query(query);
+							sql->close();
+
+							query.clear();
+							query = e_dao->get_template_insert();
+						}
+
+						it_begin = it + 1;
+						type = 1;
+					}
+				}
+
+				query += e_dao->get_query_insert(new_ruc) + ",";
+				query.back() = ';';
+
+				sql->open();
+				sql->execute_query(query);
+				sql->close();
+
+				query.clear();
+
+				spdlog::info("finish");
+				rename(file->out_filename, file->out_filename_last);
+			}
+
+
+		}
+
+		void create_table()
+		{
+			execute(get_template_table());
+		}
+
+		void drop_table()
+		{
+			execute(get_template_delete_table());
+		}
+
+		ruc_data query(const std::string& ruc)
+		{
 			std::string query = "SELECT * FROM empresas WHERE ruc=\"" + ruc + "\"";
 			std::unique_ptr<sql::ResultSet> res(execute_query(query));
 
-			//ruc_data ruc;
+			if (res == nullptr) return {};
+
+			ruc_data data;
 			res->afterLast();
 
 			while (res->previous())
 			{
-				std::cout << "\t... ID: " << res->getInt("id") << std::endl;
-				std::cout << "\t... RUC: " << res->getString(1) << std::endl;
-				std::cout << "\t... RAZON SOCIAL: " << res->getString(2) << std::endl;
-				std::cout << "\t... ESTADO CONTRIBUYENTE: " << res->getString(3) << std::endl;
-				std::cout << "\t... CONDICION DOMICILIO: " << res->getString(4) << std::endl;
+				strcpy(data.ruc, res->getString(1).c_str());
+				strcpy(data.razon_social, res->getString(2).c_str());
+				strcpy(data.estado_contribuyente, res->getString(3).c_str());
+				strcpy(data.condicion_domicilio, res->getString(4).c_str());
+				strcpy(data.ubigeo, res->getString(5).c_str());
+				strcpy(data.tipo_via, res->getString(6).c_str());
+				strcpy(data.nombre_via, res->getString(7).c_str());
+				strcpy(data.codigo_zona, res->getString(8).c_str());
+				strcpy(data.tipo_zona, res->getString(9).c_str());
+				strcpy(data.numero, res->getString(10).c_str());
+				strcpy(data.interior, res->getString(11).c_str());
+				strcpy(data.lote, res->getString(12).c_str());
+				strcpy(data.departamento, res->getString(13).c_str());
+				strcpy(data.manzana, res->getString(14).c_str());
+				strcpy(data.kilometro, res->getString(15).c_str());
 			}
-
-			//	stmt = con->createStatement();
-			//	stmt->execute("DROP TABLE IF EXISTS test");
-			//	stmt->execute("CREATE TABLE test(id INT)");
-			//	delete stmt;
-
-			//	/* '?' is the supported placeholder syntax */
-			//	pstmt = con->prepareStatement("INSERT INTO test(id) VALUES (?)");
-			//	for (int i = 1; i <= 10; i++) {
-			//		pstmt->setInt(1, i);
-			//		pstmt->executeUpdate();
-			//	}
-			//	delete pstmt;
-
-			//	/* Select in ascending order */
-			//	pstmt = con->prepareStatement("SELECT id FROM test ORDER BY id ASC");
-			//	res = pstmt->executeQuery();
-
-			//	/* Fetch in reverse = descending order! */
-			//	res->afterLast();
-			//	while (res->previous())
-			//		cout << "\t... MySQL counts: " << res->getInt("id") << endl;
-			//	delete res;
-
-			//	delete pstmt;
-			//	delete con;
-			//}
+			return data;
 		}
 
-		void update()
+		void update(file_data*& file)
 		{
 			std::string query_insert = get_template_insert();
 			std::string query_delete = get_template_delete();
 
-			std::string name = "", data = "";
-			int size = 0;
+			zar::zar_map ruc_map;
+			zar::zar_map ruc_map_last;
 
-			zar_map ruc_map;
-			zar_map ruc_last_map;
-
-			if (zip::execute("ruc_last.zip", name, size, data))
+			if (zip::execute(file->out_filename_last, file->name, file->size, file->text_data))
 			{
-				algorithms::split_iterator(data, ruc_last_map);
-				if (zip::execute("ruc.zip", name, size, data))
+				spdlog::info("file size last: {}", file->size);
+				algorithms::split_iterator(file->text_data, ruc_map_last);
+				file->text_data.clear();
+
+				if (zip::execute(file->out_filename, file->name, file->size, file->text_data))
 				{
-					algorithms::split_iterator(data, ruc_map);
+					spdlog::info("file size new: {}", file->size);
+					algorithms::split_iterator(file->text_data, ruc_map);
+
 					for (zar_map::iterator it = ruc_map.begin(); it != ruc_map.end(); ++it)
 					{
-						//spdlog::info("ruc: {}", it->first);
-						zar_map::iterator c_it = ruc_last_map.find(it->first);
-						if (c_it != ruc_last_map.end())
+						spdlog::info("ruc: {}", it->first);
+						zar_map::iterator c_it = ruc_map_last.find(it->first);
+						if (c_it != ruc_map_last.end())
 						{
 							if (c_it->second != it->second)
 							{
@@ -161,6 +274,22 @@ namespace zar
 
 			execute(query_delete);
 			execute(query_insert);
+		}
+
+		int get_count()
+		{
+			std::string query = "SELECT COUNT(id) AS c FROM empresas;";
+			std::unique_ptr<sql::ResultSet> res(execute_query(query));
+
+			if (res == nullptr) return 0;
+			int c = 0;
+
+			res->afterLast();
+			while (res->previous())
+			{
+				c = res->getInt("c");
+			}
+			return c;
 		}
 
 	private:

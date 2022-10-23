@@ -29,8 +29,6 @@ namespace zar
 
 				dock_space();
 
-				ImGui::ShowDemoWindow();
-
 				for (const auto& it : m_gui)
 					it->render(file, server, flag);
 

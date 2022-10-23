@@ -7,7 +7,7 @@ namespace zar
 	public:
 		insert_gui()
 			= default;
-		 
+
 		void start() override
 		{
 			i_gui::start();
@@ -27,7 +27,8 @@ namespace zar
 				ImGui::Separator();
 				ImGui::Text("--- INSERT ---");
 				ImGui::Separator();
-				
+
+			
 
 				if (ImGui::Button("PROCESS"))
 				{

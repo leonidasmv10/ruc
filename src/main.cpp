@@ -42,6 +42,9 @@ int main()
 //	zar::flag_data* flag = new zar::flag_data();
 //	// --------------------------------------------
 //
+//	unsigned c = 0;
+//	unsigned n_partition = 1000;
+//
 //	spdlog::info("welcome");
 //
 //	/*if (zar::http::execute(file->url, file->out_filename))*/
@@ -52,13 +55,13 @@ int main()
 //		if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
 //		{
 //			zar::mysql* sql = zar::mysql::instance();
-//			int type = 1;
-//
 //			sql->connect(*server);
-//			sql->open();
 //
 //			zar::empresa_dao* e_dao = new zar::empresa_dao();
 //			std::string data = file->text_data;
+//
+//			std::string query = e_dao->get_template_insert();
+//			int type = 1;
 //
 //			spdlog::info("read {} success", file->name);
 //			spdlog::warn("iterator init");
@@ -71,6 +74,7 @@ int main()
 //
 //			bool is_one_quote = false;
 //			bool is_two_quote = false;
+//
 //
 //			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
 //			{
@@ -99,21 +103,40 @@ int main()
 //				}
 //				else if (*it == '\n')
 //				{
-//					const std::string query = e_dao->get_template_insert() + e_dao->get_query_insert(new_ruc) + ";";
-//					sql->execute_query(query);
+//					query += e_dao->get_query_insert(new_ruc) + ",";
+//					c++;
+//
+//					if (c >= n_partition)
+//					{
+//						c = 0;
+//						query.back() = ';';
+//
+//						sql->open();
+//						sql->execute_query(query);
+//						sql->close();
+//
+//						query.clear();
+//						query = e_dao->get_template_insert();
+//					}
+//
 //					it_begin = it + 1;
 //					type = 1;
 //				}
 //			}
 //
-//			const std::string query = e_dao->get_template_insert() + e_dao->get_query_insert(new_ruc) + ";";
-//			sql->execute_query(query);
+//			query += e_dao->get_query_insert(new_ruc) + ",";
+//			query.back() = ';';
 //
+//			sql->open();
+//			sql->execute_query(query);
 //			sql->close();
+//
+//			query.clear();
+//
 //			spdlog::info("finish");
 //			rename(file->out_filename, file->out_filename_last);
 //		}
 //
-//		return 0;
 //	}
+//	return 0;
 //}

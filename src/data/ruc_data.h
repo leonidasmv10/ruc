@@ -5,7 +5,7 @@ namespace zar
 	struct ruc_data
 	{
 		char ruc[13];
-		char razon_social[300];
+		char razon_social[500];
 		char estado_contribuyente[50];
 		char condicion_domicilio[50];
 		char ubigeo[50];
