@@ -99,33 +99,43 @@ namespace zar
 
 		static void fixed_one_quote(std::string& data)
 		{
-			unsigned i = 1;
 			unsigned size = data.size();
+			int c = 0;
+			std::vector<int> list_pos;
 
-			for (; i < size; i++)
+			for (unsigned i = 0; i < size; i++)
 			{
 				if (data[i] == 39) {
-					data.insert(i, "'");
-					i++;
+					c++;
+					list_pos.push_back(i + c);
 				}
+			}
+
+			for (const int& i : list_pos)
+			{
+				data.insert(i, "'");
 			}
 		}
 
 		static void fixed_two_quote(std::string& data)
 		{
-			unsigned i = 0;
 			unsigned size = data.size();
+			int c = 0;
 
-			const char c = 92;
-			std::string r = "";
-			r += c;
+			std::vector<int> list_pos;
 
-			for (; i < size - 1; i++)
+			for (unsigned i = 0; i < size; i++)
 			{
 				if (data[i] == 34) {
-					data.insert(i, r);
-					i++;
+
+					list_pos.push_back(i + c);
+					c++;
 				}
+			}
+
+			for (const int& i : list_pos)
+			{
+				data.insert(i, "\\");
 			}
 		}
 

@@ -101,7 +101,7 @@ namespace zar
 				spdlog::info("read {} success", file->name);
 				spdlog::warn("iterator init");
 
-				std::string::const_iterator it_begin = data.begin() + 188;
+				std::string::iterator it_begin = data.begin() + 188;
 				const std::string::const_iterator it_end = data.end();
 
 				zar::ruc_data new_ruc;
@@ -110,9 +110,9 @@ namespace zar
 				bool is_one_quote = false;
 				bool is_two_quote = false;
 
-				for (std::string::const_iterator it = it_begin; it != it_end; ++it)
+				for (std::string::iterator it = it_begin; it != it_end; ++it)
 				{
-					if (*it == '|')
+					if (*it == '|' && *(it + 1) != '|')
 					{
 						r_data = std::string(it_begin, it);
 						if (is_one_quote) {
@@ -134,6 +134,10 @@ namespace zar
 					else if (*it == 34)
 					{
 						is_two_quote = true;
+					}
+					else if (*it == 92)
+					{
+						*it = '/';
 					}
 					else if (*it == '\n')
 					{
@@ -277,7 +281,7 @@ namespace zar
 			execute(query_delete);
 			execute(query_insert);
 
-			
+
 		}
 
 		int get_count()

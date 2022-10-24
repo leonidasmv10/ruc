@@ -43,11 +43,12 @@ int main()
 //	// --------------------------------------------
 //
 //	unsigned c = 0;
+//	unsigned line = 0;
 //	unsigned n_partition = 1000;
 //
 //	spdlog::info("welcome");
 //
-//	/*if (zar::http::execute(file->url, file->out_filename))*/
+//	if (zar::http::execute(file->url, file->out_filename))
 //	{
 //		spdlog::info("download {} success", file->url);
 //		spdlog::warn("read zip");
@@ -66,7 +67,7 @@ int main()
 //			spdlog::info("read {} success", file->name);
 //			spdlog::warn("iterator init");
 //
-//			std::string::const_iterator it_begin = data.begin() + 188;
+//			std::string::iterator it_begin = data.begin() + 188;
 //			const std::string::const_iterator it_end = data.end();
 //
 //			zar::ruc_data new_ruc;
@@ -75,10 +76,31 @@ int main()
 //			bool is_one_quote = false;
 //			bool is_two_quote = false;
 //
-//
-//			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
+//			for (std::string::iterator it = it_begin; it != it_end; ++it)
 //			{
-//				if (*it == '|')
+//				/*if (*it == '|')
+//				{
+//					c++;
+//					if (c == 1) r_data = std::string(it_begin, it);
+//					it_begin = it + 1;
+//
+//				}
+//				else if (*it == '\n')
+//				{
+//					line++;
+//					if (c < 15) spdlog::error("no se paso de lanza en la linea {} con el ruc {}", line, r_data);
+//					else if (c > 15) spdlog::error("se paso de lanza en la linea {} con el ruc {}", line, r_data);
+//
+//					c = 0;
+//					it_begin = it + 1;
+//				}
+//				else if (*it == 92)
+//				{
+//					*it = '/';
+//					spdlog::info("se encontro una \\ en la linea {} con el ruc {}", line, r_data);
+//				}*/
+//
+//				if (*it == '|' && *(it + 1) != '|')
 //				{
 //					r_data = std::string(it_begin, it);
 //					if (is_one_quote) {
@@ -92,6 +114,10 @@ int main()
 //
 //					zar::algorithms::set_type(new_ruc, r_data, type);
 //					it_begin = it + 1;
+//				}
+//				else if (*it == 92)
+//				{
+//					*it = '/';
 //				}
 //				else if (*it == 39)
 //				{

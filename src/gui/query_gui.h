@@ -29,7 +29,7 @@ namespace zar
 				ImGui::Text("--- QUERY ---");
 				ImGui::Separator();
 
-				static char ruc[12];
+				static char ruc[12] = "10781991061";
 
 				ImGui::InputText("RUC", ruc, IM_ARRAYSIZE(ruc));
 				ImGui::SameLine();
@@ -110,7 +110,7 @@ namespace zar
 						ImGui::TableSetColumnIndex(13);
 						ImGui::Text("%s", data.kilometro);
 
-						
+
 					}
 					ImGui::EndTable();
 				}
@@ -144,7 +144,7 @@ namespace zar
 
 
 
-				
+
 			}
 			end();
 

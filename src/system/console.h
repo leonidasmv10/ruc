@@ -21,7 +21,7 @@ namespace zar
 				{
 					flag->is_process_insert = false;
 					spdlog::info("insert init");
-					//if (zar::http::execute(file->url, file->out_filename))
+					if (zar::http::execute(file->url, file->out_filename))
 					{
 						mysql::instance()->connect(*server);
 						empresa->insert(file);
@@ -33,7 +33,7 @@ namespace zar
 				{
 					flag->is_process_update = false;
 					spdlog::info("update init");
-					//if (zar::http::execute(file->url, file->out_filename))
+					if (zar::http::execute(file->url, file->out_filename))
 					{
 						mysql::instance()->connect(*server);
 						empresa->update(file);
