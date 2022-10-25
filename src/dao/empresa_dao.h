@@ -298,21 +298,21 @@ namespace zar
 
 			while (res->previous())
 			{
-				strcpy(data.ruc, res->getString(1).c_str());
-				strcpy(data.razon_social, res->getString(2).c_str());
-				strcpy(data.estado_contribuyente, res->getString(3).c_str());
-				strcpy(data.condicion_domicilio, res->getString(4).c_str());
-				strcpy(data.ubigeo, res->getString(5).c_str());
-				strcpy(data.tipo_via, res->getString(6).c_str());
-				strcpy(data.nombre_via, res->getString(7).c_str());
-				strcpy(data.codigo_zona, res->getString(8).c_str());
-				strcpy(data.tipo_zona, res->getString(9).c_str());
-				strcpy(data.numero, res->getString(10).c_str());
-				strcpy(data.interior, res->getString(11).c_str());
-				strcpy(data.lote, res->getString(12).c_str());
-				strcpy(data.departamento, res->getString(13).c_str());
-				strcpy(data.manzana, res->getString(14).c_str());
-				strcpy(data.kilometro, res->getString(15).c_str());
+				strcpy(data.ruc, res->getString(2).c_str());
+				strcpy(data.razon_social, res->getString(3).c_str());
+				strcpy(data.estado_contribuyente, res->getString(4).c_str());
+				strcpy(data.condicion_domicilio, res->getString(5).c_str());
+				strcpy(data.ubigeo, res->getString(6).c_str());
+				strcpy(data.tipo_via, res->getString(8).c_str());
+				strcpy(data.nombre_via, res->getString(8).c_str());
+				strcpy(data.codigo_zona, res->getString(9).c_str());
+				strcpy(data.tipo_zona, res->getString(10).c_str());
+				strcpy(data.numero, res->getString(11).c_str());
+				strcpy(data.interior, res->getString(12).c_str());
+				strcpy(data.lote, res->getString(13).c_str());
+				strcpy(data.departamento, res->getString(14).c_str());
+				strcpy(data.manzana, res->getString(15).c_str());
+				strcpy(data.kilometro, res->getString(16).c_str());
 			}
 			return data;
 		}
