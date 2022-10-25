@@ -172,7 +172,6 @@ namespace zar
 				sql->close();
 
 				query.clear();
-
 				spdlog::info("finish");
 			}
 		}
@@ -280,13 +279,8 @@ namespace zar
 			query_delete.back() = ';';
 			query_insert.back() = ';';
 
-			//std::cout << query_insert << "\n";
-			//std::cout << query_delete << "\n";
-
 			execute(query_delete);
 			execute(query_insert);
-
-
 		}
 
 		ruc_data query(const std::string& ruc)

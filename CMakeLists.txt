@@ -21,14 +21,6 @@ file(GLOB_RECURSE data
     ${CMAKE_CURRENT_SOURCE_DIR}/src/data/*.h
 )
 
-file(GLOB_RECURSE gui  
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/gui/*.h
-)
-
-file(GLOB_RECURSE system  
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/system/*.h
-)
-
 file(GLOB_RECURSE tool  
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tool/*.h
 )
@@ -39,14 +31,9 @@ file(GLOB_RECURSE zar
 
 source_group("Files/dao" FILES ${dao})
 source_group("Files/data" FILES ${data})
-source_group("Files/gui" FILES ${gui})
-source_group("Files/system" FILES ${system})
 source_group("Files/tool" FILES ${tool})
 source_group("Files" FILES ${zar})
 
-find_package(glfw3 CONFIG REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(imgui CONFIG REQUIRED)
 find_package(libzippp CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
@@ -61,9 +48,6 @@ add_executable(${PROJECT_NAME} ${MAIN} ${dao} ${data} ${gui} ${system} ${tool} $
 target_link_libraries(${PROJECT_NAME} PRIVATE
 libcrypto libssl mysqlcppconn mysqlcppconn8) 
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_link_libraries(${PROJECT_NAME} PRIVATE GLEW::GLEW)
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE libzip::zip libzippp::libzippp)
 target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
 target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog spdlog::spdlog_header_only)

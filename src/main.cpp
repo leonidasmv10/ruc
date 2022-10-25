@@ -1,13 +1,5 @@
 ﻿#include "zar.h"
 
-void console_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::console::instance()->task(file, server, flag);
-}
-
-void app_loop(zar::file_data* file, zar::server_data* server, zar::flag_data* flag) {
-	zar::app::instance()->task(file, server, flag);
-}
-
 int main()
 {
 	setlocale(LC_ALL, "es_ES");
@@ -18,14 +10,7 @@ int main()
 	zar::flag_data* flag = new zar::flag_data();
 	// --------------------------------------------
 
-	std::thread m_thread(app_loop, file, server, flag);
-	std::future<void> m_async = std::async(std::launch::async, console_loop, file, server, flag);
-
-	if (m_async.valid())
-	{
-		m_async.get();
-	}
-
-	m_thread.join();
+	zar::empresa_dao* e_dao = zar::empresa_dao::instance();
+	e_dao->update(file);
 	return 0;
 }

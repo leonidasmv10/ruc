@@ -8,9 +8,6 @@
 #include <stdio.h>
 #include <map>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <spdlog\spdlog.h>
 
 #include "data/server_data.h"
@@ -24,12 +21,3 @@
 
 #include "dao/mysql.h"
 #include "dao/empresa_dao.h"
-
-#include "gui/i_gui.h"
-#include "gui/insert_gui.h"
-#include "gui/update_gui.h"
-#include "gui/query_gui.h"
-#include "gui/setting_gui.h"
-
-#include "system/app.h"
-#include "system/console.h"
