@@ -19,7 +19,7 @@ namespace zar
 
 		std::string get_query_insert(const ruc_data& ruc)
 		{
-			return "('" +
+			return "(default,'" +
 				std::string(ruc.ruc) + "', '" +
 				std::string(ruc.razon_social) + "', '" +
 				std::string(ruc.estado_contribuyente) + "', '" +
@@ -61,7 +61,8 @@ namespace zar
 		{
 			return
 				"CREATE TABLE empresas (" +
-				std::string("ruc varchar(11) NOT NULL PRIMARY KEY,") +
+				std::string("id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, ") +
+				"ruc varchar(11) NOT NULL," +
 				"razon_social varchar(500) NOT NULL," +
 				"estado_contribuyente varchar(50) NOT NULL," +
 				"condicion_domicilio varchar(50) NOT NULL," +
