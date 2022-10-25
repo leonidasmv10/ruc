@@ -26,10 +26,7 @@ Ahora configure vcpkg, una biblioteca de Microsoft que le permite agregar depend
 Instalamos las dependencias con los siguientes comandos:
 
 ```bash
-.\vcpkg\vcpkg install glew:x64-windows
-.\vcpkg\vcpkg install glfw3:x64-windows
 .\vcpkg\vcpkg install spdlog:x64-windows
-.\vcpkg\vcpkg install imgui[core,glfw-binding,opengl3-binding,docking-experimental]:x64-windows
 .\vcpkg\vcpkg install libzippp:x64-windows
 .\vcpkg\vcpkg install curl[http2]:x64-windows
 ```
