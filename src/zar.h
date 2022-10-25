@@ -11,7 +11,6 @@
 #include <spdlog\spdlog.h>
 
 #include "data/server_data.h"
-#include "data/flag_data.h"
 #include "data/ruc_data.h"
 #include "data/file_data.h"
 
