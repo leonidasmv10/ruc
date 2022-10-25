@@ -162,6 +162,8 @@ namespace zar
 					}
 				}
 
+				rename(file->out_filename, file->out_filename_last);
+
 				query += e_dao->get_query_insert(new_ruc) + ",";
 				query.back() = ';';
 
@@ -172,20 +174,119 @@ namespace zar
 				query.clear();
 
 				spdlog::info("finish");
-				rename(file->out_filename, file->out_filename_last);
+			}
+		}
+
+		void update(file_data*& file)
+		{
+			unsigned c_i = 0;
+			unsigned c_u = 0;
+			unsigned n_partition = 1000;
+
+			std::string query_insert = get_template_insert();
+			std::string query_delete = get_template_delete();
+
+			zar::zar_map ruc_map;
+			zar::zar_map ruc_map_last;
+
+			if (zip::execute(file->out_filename_last, file->name, file->size, file->text_data))
+			{
+				spdlog::info("file size last: {}", file->size);
+				algorithms::split_iterator(file->text_data, ruc_map_last);
+				file->text_data.clear();
+
+				if (zip::execute(file->out_filename, file->name, file->size, file->text_data))
+				{
+					spdlog::info("file size new: {}", file->size);
+					algorithms::split_iterator(file->text_data, ruc_map);
+
+					std::ofstream insert_file, update_file;
+					insert_file.open("inserts.txt");
+					update_file.open("updates.txt");
+
+					for (zar_map::iterator it = ruc_map.begin(); it != ruc_map.end(); ++it)
+					{
+						zar_map::iterator c_it = ruc_map_last.find(it->first);
+						if (c_it != ruc_map_last.end())
+						{
+							if (c_it->second != it->second)
+							{
+								update_file << it->second.ruc << "\n";
+
+								query_delete += get_query_delete(c_it->first) + " or ";
+								query_insert += get_query_insert(it->second) + ",";
+
+								if (c_i >= n_partition)
+								{
+									c_i = 0;
+
+									query_insert.back() = ';';
+									execute(query_insert);
+
+									query_insert = get_template_insert();
+								}
+
+								if (c_u >= n_partition)
+								{
+									c_u = 0;
+
+									query_delete.pop_back();
+									query_delete.pop_back();
+									query_delete.pop_back();
+
+									query_delete.back() = ';';
+									execute(query_delete);
+
+									query_delete = get_template_delete();
+								}
+
+								//spdlog::warn("old company");
+								//c_it->second.print();
+								//spdlog::warn("updated company");
+								//it->second.print();
+							}
+						}
+						else
+						{
+							insert_file << it->second.ruc << "\n";
+							query_insert += get_query_insert(it->second) + ",";
+
+							if (c_i >= n_partition)
+							{
+								c_i = 0;
+
+								query_insert.back() = ';';
+								execute(query_insert);
+
+								query_insert = get_template_insert();
+							}
+							/*spdlog::warn("nueva empresa");
+							it->second.print();*/
+						}
+					}
+
+					insert_file.close();
+					update_file.close();
+				}
 			}
 
+			remove(file->out_filename_last);
+			rename(file->out_filename, file->out_filename_last);
 
-		}
+			query_delete.pop_back();
+			query_delete.pop_back();
+			query_delete.pop_back();
 
-		void create_table()
-		{
-			execute(get_template_table());
-		}
+			query_delete.back() = ';';
+			query_insert.back() = ';';
 
-		void drop_table()
-		{
-			execute(get_template_delete_table());
+			//std::cout << query_insert << "\n";
+			//std::cout << query_delete << "\n";
+
+			execute(query_delete);
+			execute(query_insert);
+
+
 		}
 
 		ruc_data query(const std::string& ruc)
@@ -219,69 +320,14 @@ namespace zar
 			return data;
 		}
 
-		void update(file_data*& file)
+		void create_table()
 		{
-			std::string query_insert = get_template_insert();
-			std::string query_delete = get_template_delete();
+			execute(get_template_table());
+		}
 
-			zar::zar_map ruc_map;
-			zar::zar_map ruc_map_last;
-
-			if (zip::execute(file->out_filename_last, file->name, file->size, file->text_data))
-			{
-				spdlog::info("file size last: {}", file->size);
-				algorithms::split_iterator(file->text_data, ruc_map_last);
-				file->text_data.clear();
-
-				if (zip::execute(file->out_filename, file->name, file->size, file->text_data))
-				{
-					spdlog::info("file size new: {}", file->size);
-					algorithms::split_iterator(file->text_data, ruc_map);
-
-					for (zar_map::iterator it = ruc_map.begin(); it != ruc_map.end(); ++it)
-					{
-						zar_map::iterator c_it = ruc_map_last.find(it->first);
-						if (c_it != ruc_map_last.end())
-						{
-							if (c_it->second != it->second)
-							{
-								query_delete += get_query_delete(c_it->first) + " or ";
-								query_insert += get_query_insert(it->second) + ",";
-
-								spdlog::warn("old company");
-								c_it->second.print();
-								spdlog::warn("updated company");
-								it->second.print();
-							}
-						}
-						else
-						{
-							spdlog::warn("nueva empresa");
-							query_insert += get_query_insert(it->second) + ",";
-							it->second.print();
-						}
-					}
-
-				}
-			}
-
-			remove(file->out_filename_last);
-			rename(file->out_filename, file->out_filename_last);
-
-			query_delete.pop_back();
-			query_delete.pop_back();
-			query_delete.pop_back();
-
-			query_delete.back() = ';';
-			query_insert.back() = ';';
-
-			//std::cout << query_insert << "\n";
-			//std::cout << query_delete << "\n";
-
-			execute(query_delete);
-			execute(query_insert);
-
-
+		void drop_table()
+		{
+			execute(get_template_delete_table());
 		}
 
 		int get_count()
