@@ -47,10 +47,10 @@ namespace zar
 		}
 
 
-		static void split_iterator(const std::string& data, zar::zar_map& my_map)
+		static void split_iterator(std::string& data, zar::zar_map& my_map)
 		{
-			std::string::const_iterator it_begin = data.begin() + 188;
-			const std::string::const_iterator it_end = data.end();
+			std::string::iterator it_begin = data.begin() + 188;
+			const std::string::iterator it_end = data.end();
 
 			int type = 1;
 			ruc_data new_ruc;
@@ -59,9 +59,9 @@ namespace zar
 			bool is_one_quote = false;
 			bool is_two_quote = false;
 
-			for (std::string::const_iterator it = it_begin; it != it_end; ++it)
+			for (std::string::iterator it = it_begin; it != it_end; ++it)
 			{
-				if (*it == '|')
+				if (*it == '|' && *(it + 1) != '|')
 				{
 					r_data = std::string(it_begin, it);
 					if (is_one_quote) {
@@ -76,6 +76,7 @@ namespace zar
 					set_type(new_ruc, r_data, type);
 					it_begin = it + 1;
 				}
+
 				else if (*it == 39)
 				{
 					is_one_quote = true;
@@ -83,6 +84,10 @@ namespace zar
 				else if (*it == 34)
 				{
 					is_two_quote = true;
+				}
+				else if (*it == 92)
+				{
+					*it = '/';
 				}
 				else if (*it == '\n')
 				{
