@@ -52,11 +52,6 @@ namespace zar
 			return "DELETE FROM empresas WHERE ";
 		}
 
-		const std::string get_template_delete_table()
-		{
-			return "DROP TABLE IF EXISTS empresas;";
-		}
-
 		const std::string get_template_table()
 		{
 			return
@@ -89,14 +84,13 @@ namespace zar
 		void insert(file_data*& file)
 		{
 			unsigned c = 0;
-			unsigned n_partition = 1000;
+			unsigned n_partition = 2000;
 
 			if (zar::zip::execute(file->out_filename, file->name, file->size, file->text_data))
 			{
-				zar::empresa_dao* e_dao = new zar::empresa_dao();
 				std::string data = file->text_data;
 
-				std::string query = e_dao->get_template_insert();
+				std::string query = get_template_insert();
 				int type = 1;
 
 				spdlog::info("read {} success", file->name);
@@ -142,20 +136,18 @@ namespace zar
 					}
 					else if (*it == '\n')
 					{
-						query += e_dao->get_query_insert(new_ruc) + ",";
+						query += get_query_insert(new_ruc) + ",";
 						c++;
 
 						if (c >= n_partition)
 						{
 							c = 0;
 							query.back() = ';';
-
 							sql->open();
-							sql->execute_query(query);
+							sql->execute(query);
 							sql->close();
-
 							query.clear();
-							query = e_dao->get_template_insert();
+							query = get_template_insert();
 						}
 
 						it_begin = it + 1;
@@ -165,16 +157,14 @@ namespace zar
 
 				rename(file->out_filename, file->out_filename_last);
 
-				query += e_dao->get_query_insert(new_ruc) + ",";
+				query += get_query_insert(new_ruc) + ",";
 				query.back() = ';';
-
 				sql->open();
-				sql->execute_query(query);
+				sql->execute(query);
 				sql->close();
-
 				query.clear();
 
-				spdlog::info("finish");
+				spdlog::info("finish with {} lines", get_count());
 			}
 		}
 
@@ -212,11 +202,6 @@ namespace zar
 		void create_table()
 		{
 			execute(get_template_table());
-		}
-
-		void drop_table()
-		{
-			execute(get_template_delete_table());
 		}
 
 		int get_count()
